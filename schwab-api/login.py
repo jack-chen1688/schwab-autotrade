@@ -1,15 +1,26 @@
-from schwab_api import Schwab 
 import pprint
+import os
+import hydra
+from schwab_api import Schwab 
 
+
+home_directory = os.path.expanduser("~")
+config_path = os.path.join(home_directory, "gdrive", "work", "auth")
+
+with hydra.initialize_config_dir(config_dir=config_path, version_base=None):
+    cfg = hydra.compose(config_name="auth")
+
+username = cfg.schwab.username
+password = cfg.schwab.password
 # Initialize our schwab instance
 #browser = playwright.chromium.launch(headless=False)
-api = Schwab(headless=False, session_cache="session.json")
+api = Schwab(headless=True, session_cache="session.json")
 
 # Login using playwright
 print("Logging into Schwab")
 logged_in = api.login(
-    username="chenxuehua",
-    password="&&WbkgWTa2vT",
+    username=username,
+    password=password,
     totp_secret="ASCCXLYYOV655SJ3WQZAULLTIIHW3BVH", # Get this by generating TOTP at https://itsjafer.com/#/schwab
     lazy = True,
 )

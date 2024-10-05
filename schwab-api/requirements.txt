@@ -1,1 +1,2 @@
 schwab-api
+hydra-core
