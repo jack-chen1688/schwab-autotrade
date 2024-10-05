@@ -1,0 +1,13 @@
+Two Github project on schwab api
+https://github.com/itsjafer/schwab-api
+https://github.com/alexgolec/schwab-py
+
+
+schwab-py order templates
+https://github.com/alexgolec/schwab-py/blob/main/docs/order-templates.rst
+
+Schwab API document 
+https://developer.schwab.com/products/trader-api--individual/details/specifications/Retail%20Trader%20API%20Production
+
+Email contact for API support: traderapi@schwab.com
+phone contact: 1800-515-2157

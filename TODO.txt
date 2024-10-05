@@ -1,0 +1,3 @@
+1. Call schwab abot the margin payments and API support
+2. Try out the place order API
+3. Try out the token file functionality.
