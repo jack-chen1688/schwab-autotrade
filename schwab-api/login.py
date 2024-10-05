@@ -1,8 +1,9 @@
 import pprint
 import os
 import hydra
-from schwab_api import Schwab 
 
+from schwab_ext import SchwabExt
+from util import calculate_consolidated_gain_loss 
 
 home_directory = os.path.expanduser("~")
 config_path = os.path.join(home_directory, "gdrive", "work", "auth")
@@ -14,7 +15,8 @@ username = cfg.schwab.username
 password = cfg.schwab.password
 # Initialize our schwab instance
 #browser = playwright.chromium.launch(headless=False)
-api = Schwab(headless=True, session_cache="session.json")
+
+api = SchwabExt(headless=True, session_cache="session.json")
 
 # Login using playwright
 print("Logging into Schwab")
@@ -45,6 +47,14 @@ pprint.pprint(account_info[13492844])
 isSuccess, result = api.get_lot_info_v2(13492844, 1737167066)
 print("isSuccess: ", isSuccess)
 pprint.pprint(result)
+
+csv_file_name = "realized_gain_loss.csv"
+api.get_RGL(13492844, csv_file_name)
+results = calculate_consolidated_gain_loss(csv_file_name)
+
+# Print the consolidated gain/loss for each underlying stock
+for stock, total_gain_loss in sorted(results.items()):
+    print(f"{stock}: {'gain' if total_gain_loss >= 0 else 'loss'} {abs(total_gain_loss)}")
 """
 print("Placing a dry run trade for AAPL stock")
 
