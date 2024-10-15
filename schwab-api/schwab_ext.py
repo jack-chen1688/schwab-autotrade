@@ -5,7 +5,7 @@ class SchwabExt(Schwab):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-    def get_RGL(self, account_id, file_path):
+    def get_RGL(self, account_id, from_date, to_date, file_path):
         """
         Get the Realized Gain Loss for a specific account
         """

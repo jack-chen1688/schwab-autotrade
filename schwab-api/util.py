@@ -37,9 +37,9 @@ def calculate_consolidated_gain_loss(csv_file_name):
 
         # Add the gain/loss to the underlying stock's total in the dictionary
         if underlying_symbol in consolidated_gains_losses:
-            consolidated_gains_losses[underlying_symbol] += gain_loss
-            total_gain_loss += gain_loss
+            consolidated_gains_losses[underlying_symbol] += gain_loss    
         else:
             consolidated_gains_losses[underlying_symbol] = gain_loss
 
+        total_gain_loss += gain_loss
     return total_gain_loss, consolidated_gains_losses
