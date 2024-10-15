@@ -50,11 +50,14 @@ pprint.pprint(result)
 
 csv_file_name = "realized_gain_loss.csv"
 api.get_RGL(13492844, csv_file_name)
-results = calculate_consolidated_gain_loss(csv_file_name)
+total_gain_loss, gain_loss_dict  = calculate_consolidated_gain_loss(csv_file_name)
 
 # Print the consolidated gain/loss for each underlying stock
-for stock, total_gain_loss in sorted(results.items()):
-    print(f"{stock}: {'gain' if total_gain_loss >= 0 else 'loss'} {abs(total_gain_loss)}")
+for stock, gain_loss in sorted(gain_loss_dict.items()):
+    print(f"{stock}: {'gain' if gain_loss >= 0 else 'loss'} {abs(gain_loss)}")
+
+print(f"Total gain/loss: {total_gain_loss}")
+
 """
 print("Placing a dry run trade for AAPL stock")
 
