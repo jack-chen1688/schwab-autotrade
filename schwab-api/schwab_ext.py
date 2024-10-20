@@ -9,7 +9,7 @@ class SchwabExt(Schwab):
         """
         Get the Realized Gain Loss for a specific account
         """
-        url = "https://ausgateway.schwab.com/api/is.RealizedGainLoss/V1/Rgl/export?selectedTimeFrame=Custom&IncludeLots=true&fromDate=01/01/2022&toDate=10/11/2024&sortBy=symbol&hasPresto=true"
+        url = f"https://ausgateway.schwab.com/api/is.RealizedGainLoss/V1/Rgl/export?selectedTimeFrame=Custom&IncludeLots=true&fromDate={from_date}&toDate={to_date}&sortBy=symbol&hasPresto=true"
         # Send a GET request to the URL
         self.headers["Schwab-Client-ids"] = str(account_id)
         response = requests.get(url, headers=self.headers)

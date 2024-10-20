@@ -49,7 +49,7 @@ print("isSuccess: ", isSuccess)
 pprint.pprint(result)
 
 csv_file_name = "realized_gain_loss.csv"
-api.get_RGL(account_id=13492844, from_date="01/01/2024", to_date="10/15/2024", file_path=csv_file_name)
+api.get_RGL(account_id=13492844, from_date="10/01/2024", to_date="10/20/2024", file_path=csv_file_name)
 total_gain_loss, gain_loss_dict  = calculate_consolidated_gain_loss(csv_file_name)
 
 # Print the consolidated gain/loss for each underlying stock
