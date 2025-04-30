@@ -3,7 +3,7 @@ import os
 import hydra
 
 from schwab_ext import SchwabExt
-from util import calculate_consolidated_gain_loss 
+from util import * 
 
 home_directory = os.path.expanduser("~")
 config_path = os.path.join(home_directory, "gdrive", "work", "auth")
@@ -49,7 +49,11 @@ print("isSuccess: ", isSuccess)
 pprint.pprint(result)
 
 csv_file_name = "realized_gain_loss.csv"
-api.get_RGL(account_id=13492844, from_date="10/01/2024", to_date="10/20/2024", file_path=csv_file_name)
+api.get_RGL(account_id=13492844, from_date="01/01/2023", to_date="04/29/2025", file_path=csv_file_name)
+
+sort_csv_by_symbol(csv_file_name, "sorted_" + csv_file_name)
+# sort the file 
+
 total_gain_loss, gain_loss_dict  = calculate_consolidated_gain_loss(csv_file_name)
 
 # Print the consolidated gain/loss for each underlying stock
