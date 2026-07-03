@@ -1,3 +1,4 @@
 schwab-api
 hydra-core
-setuptools
+setuptools<81
+playwright-stealth==1.0.6

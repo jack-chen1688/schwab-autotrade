@@ -6,7 +6,7 @@ from schwab_ext import SchwabExt
 from util import * 
 
 home_directory = os.path.expanduser("~")
-config_path = os.path.join(home_directory, "gdrive", "work", "auth")
+config_path = os.path.join(home_directory, "gdrive", "auth")
 
 with hydra.initialize_config_dir(config_dir=config_path, version_base=None):
     cfg = hydra.compose(config_name="auth")
@@ -32,24 +32,26 @@ quotes = api.quote_v2(["PFE", "AAPL"])
 pprint.pprint(quotes)
 
 # Get information about all accounts holdings
-print("Getting account holdings information")
-account_info = api.get_account_info()
-pprint.pprint(account_info)
-
-print("Getting account holdings informration v2")
+# Note: api.get_account_info() (v1) is broken — it hits the legacy
+# client.schwab.com/api/PositionV2/PositionsDataV2 endpoint, which no longer
+# returns JSON. Use the v2 method instead.
+print("Getting account holdings information v2")
 account_info = api.get_account_info_v2()
 pprint.pprint(account_info)
 
 print("The following account numbers were found: " + str(account_info.keys()))
 
-pprint.pprint(account_info[13492844])
+# Pick the first account that holds at least one position
+account_id = next(a for a, info in account_info.items() if info["positions"])
+pprint.pprint(account_info[account_id])
 
-isSuccess, result = api.get_lot_info_v2(13492844, 1737167066)
+security_id = account_info[account_id]["positions"][0]["security_id"]
+isSuccess, result = api.get_lot_info_v2(account_id, security_id)
 print("isSuccess: ", isSuccess)
 pprint.pprint(result)
 
 csv_file_name = "realized_gain_loss.csv"
-api.get_RGL(account_id=13492844, from_date="01/01/2023", to_date="04/29/2025", file_path=csv_file_name)
+api.get_RGL(account_id=account_id, from_date="01/01/2023", to_date="07/02/2026", file_path=csv_file_name)
 
 sort_csv_by_symbol(csv_file_name, "sorted_" + csv_file_name)
 # sort the file 
