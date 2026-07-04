@@ -41,28 +41,31 @@ pprint.pprint(account_info)
 
 print("The following account numbers were found: " + str(account_info.keys()))
 
-# Pick the first account that holds at least one position
-account_id = next(a for a, info in account_info.items() if info["positions"])
-pprint.pprint(account_info[account_id])
+# security_id = account_info[account_id]["positions"][0]["security_id"]
+# isSuccess, result = api.get_lot_info_v2(account_id, security_id)
+# print("isSuccess: ", isSuccess)
+# pprint.pprint(result)
 
-security_id = account_info[account_id]["positions"][0]["security_id"]
-isSuccess, result = api.get_lot_info_v2(account_id, security_id)
-print("isSuccess: ", isSuccess)
-pprint.pprint(result)
+# Print the realized gain/loss for every account found
+grand_total_gain_loss = 0
+for account_id in account_info.keys():
+    print(f"\n===== Account {account_id} =====")
 
-csv_file_name = "realized_gain_loss.csv"
-api.get_RGL(account_id=account_id, from_date="01/01/2023", to_date="07/02/2026", file_path=csv_file_name)
+    csv_file_name = f"realized_gain_loss_{account_id}.csv"
+    api.get_RGL(account_id=account_id, from_date="01/01/2023", to_date="07/02/2026", file_path=csv_file_name)
 
-sort_csv_by_symbol(csv_file_name, "sorted_" + csv_file_name)
-# sort the file 
+    sort_csv_by_symbol(csv_file_name, "sorted_" + csv_file_name)
 
-total_gain_loss, gain_loss_dict  = calculate_consolidated_gain_loss(csv_file_name)
+    total_gain_loss, gain_loss_dict = calculate_consolidated_gain_loss(csv_file_name)
 
-# Print the consolidated gain/loss for each underlying stock
-for stock, gain_loss in sorted(gain_loss_dict.items()):
-    print(f"{stock}: {'gain' if gain_loss >= 0 else 'loss'} {abs(gain_loss)}")
+    # Print the consolidated gain/loss for each underlying stock
+    for stock, gain_loss in sorted(gain_loss_dict.items()):
+        print(f"{stock}: {'gain' if gain_loss >= 0 else 'loss'} {abs(gain_loss)}")
 
-print(f"Total gain/loss: {total_gain_loss}")
+    print(f"Account {account_id} total gain/loss: {total_gain_loss}")
+    grand_total_gain_loss += total_gain_loss
+
+print(f"\nGrand total gain/loss across all accounts: {grand_total_gain_loss}")
 
 """
 print("Placing a dry run trade for AAPL stock")
